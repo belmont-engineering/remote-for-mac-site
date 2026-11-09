@@ -1,0 +1,476 @@
+---
+import { testFlightURL, macAppURL } from '../links';
+
+const title = 'Remote for Mac';
+const description =
+  'Use your Mac from your iPhone, iPad or another Mac: see its screen, type, click and scroll, at home or away. No account needed.';
+const comingSoon = !testFlightURL || !macAppURL;
+
+// The app icon's loop (Design/AppIcon), drawn large in the hero.
+const loop =
+  'M47.1393 78.79L20.5915 44.5961C14.1165 36.2566 20.2805 24.1452 30.8339 24.4717L74.1031 25.8101C86.9222 26.2068 90.8747 43.3641 79.5204 49.3294L75.1727 51.613C70.4852 54.0761 67.8623 59.2299 68.6303 64.4691L69.3423 69.3282C71.2021 82.0186 55.0048 88.9209 47.1393 78.79Z';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="theme-color" content="#F5F6F8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap"
+    />
+  </head>
+  <body>
+    <header class="wrap masthead">
+      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true">
+        <rect width="100" height="100" rx="22.5" fill="#FFFFFF" />
+        <circle cx="33.2068" cy="38.2029" r="24.7647" fill="var(--coral)" />
+        <path d={loop} fill="none" stroke="var(--ink)" stroke-width="12.4783" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span class="name">Remote for Mac</span>
+    </header>
+
+    <main>
+      <section class="wrap hero">
+        <div class="hero-text">
+          <h1>Use your Mac from your iPhone, iPad or another&nbsp;Mac.</h1>
+          <p class="lede">
+            See your Mac’s screen and type, click and scroll on it, at home or away. What you type shows up sharp the
+            moment it appears.
+          </p>
+
+          <div class="actions">
+            {
+              testFlightURL ? (
+                <a class="button primary" href={testFlightURL}>Join the beta on TestFlight</a>
+              ) : (
+                <span class="button primary" aria-disabled="true">
+                  Join the beta on TestFlight <span class="soon">Coming soon</span>
+                </span>
+              )
+            }
+            {
+              macAppURL ? (
+                <a class="button secondary" href={macAppURL}>Download the Mac app</a>
+              ) : (
+                <span class="button secondary" aria-disabled="true">
+                  Download the Mac app <span class="soon">Coming soon</span>
+                </span>
+              )
+            }
+          </div>
+          <p class="fine">
+            {
+              comingSoon
+                ? 'The beta isn’t open yet. These buttons start working the day it is.'
+                : 'TestFlight is Apple’s app for trying apps before they reach the App Store.'
+            }
+          </p>
+        </div>
+
+        <svg class="gesture" viewBox="0 0 100 100" role="img" aria-label="The Remote for Mac icon: a looping stroke over a coral circle">
+          <circle class="dot" cx="33.2068" cy="38.2029" r="24.7647" />
+          <path class="trace" d={loop} pathLength="1" />
+        </svg>
+      </section>
+
+      <section class="wrap setup" aria-labelledby="setup-title">
+        <h2 id="setup-title">Set it up once</h2>
+        <ol class="steps">
+          <li>
+            <h3>Install the Mac app</h3>
+            <p>
+              Put it on the Mac you want to control and open it. Allow Screen Recording and Accessibility when macOS
+              asks, so it can show your screen and take your clicks and keys.
+            </p>
+          </li>
+          <li>
+            <h3>Get Remote on your iPhone, iPad or other Mac</h3>
+            <p>Join the beta on TestFlight and install it from there.</p>
+          </li>
+          <li>
+            <h3>Pair them side by side</h3>
+            <p>Turn on Remote access on the Mac and scan the code it shows. You only do this once.</p>
+          </li>
+        </ol>
+        <p class="after">
+          From then on, open Remote and pick your Mac. It finds it on your home network, and over the internet when
+          you’re away.
+        </p>
+      </section>
+
+      <section class="wrap notes" aria-labelledby="notes-title">
+        <h2 id="notes-title">Good to know</h2>
+        <dl>
+          <div>
+            <dt>No account</dt>
+            <dd>There’s nothing to sign up for. Your devices know each other from the pairing.</dd>
+          </div>
+          <div>
+            <dt>Private</dt>
+            <dd>
+              Everything between your devices is encrypted. If a network blocks a direct connection, a relay passes
+              the encrypted data along without being able to read it.
+            </dd>
+          </div>
+          <div>
+            <dt>Copy and paste</dt>
+            <dd>Copy on the Mac and paste on your phone, or the other way round, for text and images up to 20 MB.</dd>
+          </div>
+          <div>
+            <dt>What you need</dt>
+            <dd>A Mac with macOS 26, and an iPhone or iPad with iOS 26 or iPadOS 26.</dd>
+          </div>
+        </dl>
+      </section>
+    </main>
+
+    <footer class="wrap footer">
+      <p>Remote for Mac is in beta.</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --paper: #f5f6f8;
+    --ink: #323232;
+    --ink-soft: #5c5d63;
+    --coral: #ff8a8a;
+    --rule: #dcdee3;
+    --white: #ffffff;
+    color-scheme: light;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+    font-optical-sizing: auto;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  ol,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 70rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 40rem) {
+    .wrap {
+      padding-inline: 2rem;
+    }
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+
+  /* Masthead */
+  .masthead {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-block: 1.5rem;
+  }
+
+  .mark {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.56rem;
+    box-shadow: 0 0 0 1px var(--rule);
+  }
+
+  .name {
+    font-weight: 650;
+    font-size: 1.125rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    padding-block: 2.5rem 4rem;
+  }
+
+  @media (min-width: 52rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      gap: 3rem;
+      padding-block: 4rem 6rem;
+    }
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem);
+    line-height: 1.02;
+    font-weight: 720;
+    font-variation-settings: 'wdth' 82;
+    letter-spacing: -0.03em;
+    max-width: 14ch;
+    text-wrap: balance;
+  }
+
+  .lede {
+    margin-top: 1.5rem;
+    max-width: 36rem;
+    font-size: 1.25rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    padding: 0.8rem 1.4rem;
+    border-radius: 999px;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1.2;
+  }
+
+  .button.primary {
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .button.secondary {
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: inset 0 0 0 2px var(--ink);
+  }
+
+  a.button.primary:hover {
+    background: #1f1f1f;
+  }
+
+  a.button.secondary:hover {
+    background: #eceef1;
+  }
+
+  .button[aria-disabled='true'] {
+    cursor: default;
+  }
+
+  .button.primary[aria-disabled='true'] {
+    background: #6b6c72;
+  }
+
+  .button.secondary[aria-disabled='true'] {
+    color: var(--ink-soft);
+    box-shadow: inset 0 0 0 2px #a9abb2;
+  }
+
+  .soon {
+    white-space: nowrap;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: var(--coral);
+    color: var(--ink);
+    font-size: 0.8125rem;
+    font-weight: 650;
+  }
+
+  .fine {
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+
+  /* The icon's loop, traced once on load */
+  .gesture {
+    width: min(70%, 16rem);
+    justify-self: center;
+    overflow: visible;
+  }
+
+  @media (min-width: 52rem) {
+    .gesture {
+      width: min(100%, 26rem);
+    }
+  }
+
+  .gesture .dot {
+    fill: var(--coral);
+  }
+
+  .gesture .trace {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 12.4783;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .gesture .dot {
+      transform-origin: 33.2px 38.2px;
+      animation: dot-in 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .gesture .trace {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: trace 1600ms cubic-bezier(0.65, 0, 0.35, 1) 250ms forwards;
+    }
+
+    @keyframes dot-in {
+      from {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+    }
+
+    @keyframes trace {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+  }
+
+  /* Setup */
+  h2 {
+    font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+    line-height: 1.1;
+    font-weight: 700;
+    font-variation-settings: 'wdth' 85;
+    letter-spacing: -0.02em;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    font-weight: 650;
+  }
+
+  .setup,
+  .notes {
+    padding-block: 3.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+    display: grid;
+    gap: 2rem;
+    counter-reset: step;
+  }
+
+  @media (min-width: 52rem) {
+    .steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.5rem;
+    }
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 50%;
+    background: var(--coral);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 1.125rem;
+  }
+
+  .steps p,
+  .after,
+  dd {
+    color: var(--ink-soft);
+    max-width: 34rem;
+  }
+
+  .after {
+    margin-top: 2.5rem;
+    color: var(--ink);
+    font-size: 1.25rem;
+    max-width: 40rem;
+  }
+
+  /* Notes */
+  dl {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1.75rem 3rem;
+  }
+
+  @media (min-width: 44rem) {
+    dl {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  dt {
+    font-weight: 650;
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Footer */
+  .footer {
+    padding-block: 2rem 3rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+  }
+</style>

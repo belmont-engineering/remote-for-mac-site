@@ -1,0 +1,7 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<clipPath id="body"><rect x="100" y="100" width="824" height="824" rx="185.4" ry="185.4"/></clipPath>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="10"/><feOffset dy="10" result="b"/><feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g filter="url(#shadow)"><g clip-path="url(#body)"><g transform="translate(100 100) scale(8.24)"><rect width="100" height="100" fill="#FFFFFF"/><circle cx="33.2068" cy="38.2029" r="24.7647" fill="#FF8A8A"/><path d="M47.1393 78.79L20.5915 44.5961C14.1165 36.2566 20.2805 24.1452 30.8339 24.4717L74.1031 25.8101C86.9222 26.2068 90.8747 43.3641 79.5204 49.3294L75.1727 51.613C70.4852 54.0761 67.8623 59.2299 68.6303 64.4691L69.3423 69.3282C71.2021 82.0186 55.0048 88.9209 47.1393 78.79Z" stroke="#323232" stroke-width="12.4783" stroke-linecap="round" stroke-linejoin="round" fill="none"/></g></g></g>
+</svg>
