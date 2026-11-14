@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { testFlightURL, macAppURL } from '../links';
+import { testFlightURL, macAppURL, macAppVersion } from '../links';
 import macOnIphone from '../assets/screenshots/mac-on-iphone.png';
 import ipadKeyboard from '../assets/screenshots/ipad-keyboard.png';
 import pairing from '../assets/screenshots/pairing.png';
@@ -37,7 +37,15 @@ const shots = [
 const title = 'Remote for Mac';
 const description =
   'Use your Mac from your iPhone, iPad or another Mac: see its screen, type, click and scroll, at home or away. No account needed.';
-const comingSoon = !testFlightURL || !macAppURL;
+// The line under the buttons says which of them work yet.
+const fine =
+  testFlightURL && macAppURL
+    ? `TestFlight is Apple’s app for trying apps before they reach the App Store. The Mac app is version ${macAppVersion}.`
+    : macAppURL
+      ? `The Mac app is ready: version ${macAppVersion}, for macOS 26. The iPhone and iPad app comes to TestFlight soon.`
+      : testFlightURL
+        ? 'TestFlight is Apple’s app for trying apps before they reach the App Store. The Mac app follows soon.'
+        : 'The beta isn’t open yet. These buttons start working the day it is.';
 
 // The app icon's loop (Design/AppIcon), drawn large in the hero.
 const loop =
@@ -93,7 +101,7 @@ const loop =
             }
             {
               macAppURL ? (
-                <a class="button secondary" href={macAppURL}>Download the Mac app</a>
+                <a class="button secondary" href={macAppURL} download>Download the Mac app</a>
               ) : (
                 <span class="button secondary" aria-disabled="true">
                   Download the Mac app <span class="soon">Coming soon</span>
@@ -101,13 +109,7 @@ const loop =
               )
             }
           </div>
-          <p class="fine">
-            {
-              comingSoon
-                ? 'The beta isn’t open yet. These buttons start working the day it is.'
-                : 'TestFlight is Apple’s app for trying apps before they reach the App Store.'
-            }
-          </p>
+          <p class="fine">{fine}</p>
         </div>
 
         <svg class="gesture" viewBox="0 0 100 100" role="img" aria-label="The Remote for Mac icon: a looping stroke over a coral circle">
@@ -147,8 +149,9 @@ const loop =
           <li>
             <h3>Install the Mac app</h3>
             <p>
-              Put it on the Mac you want to control and open it. Allow Screen Recording and Accessibility when macOS
-              asks, so it can show your screen and take your clicks and keys.
+              On the Mac you want to control, open the download and drag Remote for Mac Host into Applications, then
+              open it. Allow Screen Recording and Accessibility when macOS asks, so it can show your screen and take
+              your clicks and keys.
             </p>
           </li>
           <li>
