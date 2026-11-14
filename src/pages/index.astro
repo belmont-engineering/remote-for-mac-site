@@ -118,6 +118,44 @@ const loop =
         </svg>
       </section>
 
+      <section class="wrap why" aria-labelledby="why-title">
+        <h2 id="why-title">Why Remote for Mac</h2>
+        <ul class="props">
+          <li>
+            <h3>No account</h3>
+            <p>
+              There’s nothing to sign up for, and no company account sits between you and your Mac. Pair your iPhone or
+              iPad with it once, side by side, and they know each other from then on.
+            </p>
+          </li>
+          <li>
+            <h3>Fast enough to type on</h3>
+            <p>
+              On home Wi‑Fi, a change goes from your iPhone to your Mac’s screen and back in about 25&nbsp;ms. Scrolling
+              and switching windows take 35 to 45&nbsp;ms.
+            </p>
+          </li>
+          <li>
+            <h3>Sharp, and the right shape</h3>
+            <p>
+              What you type arrives pixel for pixel, not as blurry video that sharpens a moment later. While you’re
+              connected, your Mac adds a screen shaped like your iPhone or iPad, at its full resolution, so nothing is
+              shrunk to fit.
+            </p>
+          </li>
+          <li>
+            <h3>Encrypted end to end</h3>
+            <p>
+              Only your own devices can read what passes between them. If a network blocks a direct connection, a relay
+              passes the encrypted data along without being able to read it.
+            </p>
+          </li>
+        </ul>
+        <p class="measured">
+          Speeds are medians from the lag meter built into the app, on an iPhone 16 Pro and a MacBook Pro on home Wi‑Fi.
+        </p>
+      </section>
+
       <section class="wrap gallery" aria-labelledby="gallery-title">
         <h2 id="gallery-title">What it looks like</h2>
         <ul class="shots">
@@ -172,17 +210,6 @@ const loop =
       <section class="wrap notes" aria-labelledby="notes-title">
         <h2 id="notes-title">Good to know</h2>
         <dl>
-          <div>
-            <dt>No account</dt>
-            <dd>There’s nothing to sign up for. Your devices know each other from the pairing.</dd>
-          </div>
-          <div>
-            <dt>Private</dt>
-            <dd>
-              Everything between your devices is encrypted. If a network blocks a direct connection, a relay passes
-              the encrypted data along without being able to read it.
-            </dd>
-          </div>
           <div>
             <dt>Copy and paste</dt>
             <dd>Copy on the Mac and paste on your phone, or the other way round, for text and images up to 20 MB.</dd>
@@ -451,6 +478,7 @@ const loop =
     font-weight: 650;
   }
 
+  .why,
   .gallery,
   .setup,
   .notes {
@@ -458,6 +486,32 @@ const loop =
     border-top: 1px solid var(--rule);
   }
 
+  /* Why */
+  .props {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 2rem 3rem;
+  }
+  @media (min-width: 44rem) {
+    .props {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .props h3 {
+    margin-bottom: 0.4rem;
+  }
+  .props p {
+    color: var(--ink-soft);
+    max-width: 34rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .measured {
+    margin-top: 2rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
   /* Screenshots */
   .shots {
     list-style: none;
