@@ -1,0 +1,180 @@
+---
+// The Mac's desktop as the tall screen it gets from an iPhone held upright (400 × 804: the iPhone's screen below
+// Remote's bar). Part 1 of the hero: the pointer is pushed to "Book a table for seven", which ticks at 3.0 s and stays
+// ticked while this screen is hidden, then resets. Anything passed in (the finger on the phone) is drawn on top.
+import { loop, dot } from '../icon';
+
+const folders = [
+  { x: 140, label: 'Remote' },
+  { x: 212, label: 'Site' },
+  { x: 284, label: 'Photos' },
+];
+const sidebar = ['Recents', 'Applications', 'Desktop'];
+const menus = [
+  { x: 60, text: 'File' },
+  { x: 88, text: 'Edit' },
+  { x: 116, text: 'Format' },
+  { x: 160, text: 'View' },
+];
+const lights = ['#ff5f57', '#febc2e', '#28c840'];
+const dockColors = ['#5d8ef0', '#ff8a8a', '#ffc94d', '#6ccf7f', '#a493e8', '#2a2a2d', '#eceef1'];
+---
+
+<rect width="400" height="804" fill="#3b3c40" />
+<g transform="translate(-29 380) scale(6)">
+  <circle cx={dot.cx} cy={dot.cy} r={dot.r} fill="#ff8a8a" />
+  <path d={loop} fill="none" stroke="#2c2d31" stroke-width="12.48" stroke-linecap="round" stroke-linejoin="round" />
+</g>
+
+<!-- Menu bar: a narrow screen keeps only the first menus -->
+<rect width="400" height="24" fill="#1f2023" opacity="0.72" />
+<g fill="#fff" opacity="0.92" font-size="12">
+  <text x="14" y="16.5" font-weight="700">Notes</text>
+  {menus.map((m) => <text x={m.x} y="16.5">{m.text}</text>)}
+  <rect x="300" y="8" width="15" height="8" rx="2" />
+  <rect x="322" y="8" width="12" height="8" rx="4" />
+  <text x="388" y="16.5" text-anchor="end">Sat 9:41</text>
+</g>
+
+<!-- Finder: Projects, behind -->
+<g filter="url(#scene-window-shadow)">
+  <rect x="28" y="70" width="344" height="170" rx="11" fill="#fff" />
+</g>
+<path d="M39 70H118V240H39A11 11 0 0 1 28 229V81A11 11 0 0 1 39 70Z" fill="#f0f1f3" />
+{lights.map((c, i) => <circle cx={46 + i * 16} cy="87" r="5.5" fill={c} />)}
+<text x="245" y="91" text-anchor="middle" font-size="13.5" font-weight="600" fill="#3a3a3c">Projects</text>
+{sidebar.map((s, i) => <text x="40" y={122 + i * 23} font-size="12" fill="#4a4b50">{s}</text>)}
+{
+  folders.map((f) => (
+    <g>
+      <rect x={f.x} y="105" width="20" height="9" rx="3" fill="#4f80e6" />
+      <rect x={f.x} y="110" width="50" height="36" rx="5" fill="#5d8ef0" />
+      <text x={f.x + 25} y="164" text-anchor="middle" font-size="11" fill="#444">{f.label}</text>
+    </g>
+  ))
+}
+
+<!-- The to-do list: Saturday -->
+<g filter="url(#scene-window-shadow)">
+  <rect x="16" y="196" width="368" height="300" rx="12" fill="#fff" />
+</g>
+{lights.map((c, i) => <circle cx={34 + i * 18} cy="214" r="6" fill={c} />)}
+<text x="200" y="219" text-anchor="middle" font-size="13.5" font-weight="600" fill="#3a3a3c">Saturday</text>
+<text x="40" y="272" font-size="32" font-weight="700" fill="#1f1f21">Saturday</text>
+<g font-size="20">
+  <circle cx="52" cy="318" r="12.75" fill="#ff8a8a" />
+  <text x="76" y="325" fill="#9b9ca2">Pick up the film from the lab</text>
+  <circle cx="52" cy="362" r="12.75" fill="#ff8a8a" />
+  <text x="76" y="369" fill="#9b9ca2">Send Sam the photos</text>
+  <circle cx="52" cy="406" r="12" fill="none" stroke="#8d8e94" stroke-width="1.5" />
+  <circle class="tick" cx="52" cy="406" r="12.75" fill="#ff8a8a" />
+  <text class="todo" x="76" y="413">Book a table for seven</text>
+  <circle cx="52" cy="450" r="12" fill="none" stroke="#8d8e94" stroke-width="1.5" />
+  <text x="76" y="457" fill="#2c2c2e">Fix the bike’s back light</text>
+</g>
+
+<!-- Dock -->
+<rect x="36" y="742" width="328" height="50" rx="15" fill="#fff" fill-opacity="0.16" stroke="#fff" stroke-opacity="0.22" />
+{dockColors.map((c, i) => <rect x={46 + i * 45} y="749" width="36" height="36" rx="9" fill={c} />)}
+
+<!-- The Mac's pointer -->
+<g class="pointer">
+  <path
+    transform="scale(1.5)"
+    d="M0 0V22L5.6 16.9L9.3 25.6L12.9 24.1L9.3 15.6H16.6Z"
+    fill="#000"
+    stroke="#fff"
+    stroke-width="1.6"
+    stroke-linejoin="round"
+  />
+</g>
+
+<slot />
+
+<style>
+  /* Without motion this screen is hidden (the hero rests on part 2), so these only need to be consistent. */
+  .pointer {
+    transform: translate(52px, 406px);
+  }
+
+  .todo {
+    fill: #9b9ca2;
+  }
+
+  .tick {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pointer {
+      animation: tall-pointer 14s infinite;
+    }
+
+    .tick {
+      animation: tall-tick 14s infinite;
+    }
+
+    .todo {
+      animation: tall-todo 14s infinite;
+    }
+
+    :global(.hero-scene[data-paused]) :is(.pointer, .tick, .todo) {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Seconds of the hero's 14 s loop: pushed from 1.0 to 2.4 s, ticked at 3.0 s; reset at 8.4 s, while hidden. */
+  @keyframes tall-pointer {
+    0%,
+    7.14% {
+      transform: translate(250px, 600px);
+      animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+    }
+    17.14%,
+    60% {
+      transform: translate(52px, 406px);
+    }
+    60.5%,
+    100% {
+      transform: translate(250px, 600px);
+    }
+  }
+
+  @keyframes tall-tick {
+    0%,
+    21.43% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    22.5% {
+      opacity: 1;
+      transform: scale(1.18);
+    }
+    23.79%,
+    60% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    60.5%,
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes tall-todo {
+    0%,
+    21.43% {
+      fill: #2c2c2e;
+    }
+    22.5%,
+    60% {
+      fill: #9b9ca2;
+    }
+    60.5%,
+    100% {
+      fill: #2c2c2e;
+    }
+  }
+</style>

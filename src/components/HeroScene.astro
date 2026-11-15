@@ -1,80 +1,53 @@
 ---
-// The hero: a laptop and an iPhone held upright, both showing the same Mac desktop (drawn like the Figma mockups on
-// page "Website screenshots"). A 14 s loop in two parts:
-//   1. Full screen: a finger on the phone pushes the Mac's pointer to a to-do and taps; it ticks on both screens.
-//   2. Laptop mode (phase 5): a trackpad and keys slide up under the Mac's picture. The finger moves the pointer on the
-//      trackpad and taps below the list, and "Buy flowers" is typed on the keys, on both screens as it's typed.
-// Held upright, the phone asks the Mac for a tall screen its own shape, and the Mac's built-in display mirrors it, so
-// the laptop shows it as a strip with black either side, as the real app does. In laptop mode the Mac's screen keeps
-// macOS's 800-point minimum height, so its picture runs under the pad and the laptop's strip doesn't change.
-//
-// The desktop is drawn once per screen from the same markup, and both copies run the same CSS animations, so they
-// stay in step. Without motion (prefers-reduced-motion), the scene rests on its last frame: laptop mode, the to-do
-// ticked and the new one typed.
-import { loop, dot } from '../icon';
+// The hero: a laptop and an iPhone held upright, both showing the same Mac (drawn like the Figma mockups on page
+// "Website screenshots"). Remote's buttons sit in a black bar across the top of the iPhone, so they never cover the
+// Mac's picture. A 14 s loop in two parts:
+//   1. Full screen: the Mac gets a tall screen the shape of the iPhone below the bar (MacTall), which the laptop
+//      mirrors as a strip with black either side. A finger pushes the pointer to a to-do and taps; it ticks.
+//   2. Laptop mode (phase 5): keys and a trackpad slide up under the picture. The space left is about square, so the
+//      Mac goes back to its own landscape screen (MacWide): the laptop fills its display and the iPhone shows all of
+//      it. A finger on the trackpad moves the pointer below the list and taps, and "Buy flowers" is typed on the keys.
+// Each Mac screen is drawn once per device from the same component, and both copies run the same CSS animations, so
+// they stay in step. Without motion (prefers-reduced-motion), the scene rests on its last frame: part 2, typed.
+import MacTall from './MacTall.astro';
+import MacWide from './MacWide.astro';
 
-// The Mac desktop is 400 × 868, the shape of an iPhone 16 Pro held upright (1206 × 2622).
-const screens = [
-  { name: 'laptop', x: 205.5, y: 31, scale: 0.3125, clip: 'scene-laptop-screen' },
-  { name: 'phone', x: 407, y: 135, scale: 0.36, clip: 'scene-phone-screen' },
-];
-
-const folders = [
-  { x: 140, label: 'Remote' },
-  { x: 212, label: 'Site' },
-  { x: 284, label: 'Photos' },
-];
-const sidebar = ['Recents', 'Applications', 'Desktop'];
-const menus = [
-  { x: 60, text: 'File' },
-  { x: 88, text: 'Edit' },
-  { x: 116, text: 'Format' },
-  { x: 160, text: 'View' },
-];
-const todos = [
-  { y: 318, text: 'Pick up the film from the lab', done: true },
-  { y: 362, text: 'Send Sam the photos', done: true },
-  { y: 406, text: 'Book a table for seven', done: false, ticks: true },
-  { y: 450, text: 'Fix the bike’s back light', done: false },
-];
-const dockColors = ['#5d8ef0', '#ff8a8a', '#ffc94d', '#6ccf7f', '#a493e8', '#2a2a2d', '#eceef1'];
-const lights = ['#ff5f57', '#febc2e', '#28c840'];
-
-// The keys under the trackpad in laptop mode. Each key typed in "Buy flowers" flashes when it's pressed: the first at
-// 8.1 s into the loop, then one every 120 ms.
+// The keys in laptop mode. Each key typed in "Buy flowers" lights when it's pressed: the first at 8.1 s into the
+// loop, then one every 120 ms.
 const typed = 'buy flowers';
 const pressedAt = (key: string) => {
   const i = typed.indexOf(key);
   return i < 0 ? undefined : `animation-delay: ${(8.1 + i * 0.12).toFixed(2)}s`;
 };
 const letterRows = [
-  { keys: 'qwertyuiop', x: 12, y: 677 },
-  { keys: 'asdfghjkl', x: 31, y: 723 },
-  { keys: 'zxcvbnm', x: 69, y: 769 },
+  { keys: 'qwertyuiop', x: 12, y: 326 },
+  { keys: 'asdfghjkl', x: 31, y: 372 },
+  { keys: 'zxcvbnm', x: 69, y: 418 },
 ];
 const keys = [
   ...letterRows.flatMap((row) =>
     [...row.keys].map((k, i) => ({ x: row.x + i * 38, y: row.y, w: 34, label: k.toUpperCase(), style: pressedAt(k) })),
   ),
-  { x: 12, y: 769, w: 46, label: '⇧' },
-  { x: 342, y: 769, w: 46, label: '⌫' },
-  { x: 12, y: 815, w: 78, label: '123' },
-  { x: 96, y: 815, w: 208, label: 'space', style: pressedAt(' ') },
-  { x: 310, y: 815, w: 78, label: 'return' },
+  { x: 12, y: 418, w: 46, label: '⇧' },
+  { x: 342, y: 418, w: 46, label: '⌫' },
+  { x: 12, y: 464, w: 78, label: '123' },
+  { x: 96, y: 464, w: 208, label: 'space', style: pressedAt(' ') },
+  { x: 310, y: 464, w: 78, label: 'return' },
 ];
 ---
 
 <div class="hero-scene">
   <svg viewBox="0 0 576 478" role="img" aria-labelledby="scene-title">
     <title id="scene-title">
-      A laptop and an iPhone held upright, both showing the same Mac desktop. A finger on the iPhone moves the Mac’s
-      pointer to the to-do “Book a table for seven” and taps it, and it ticks on both screens at once. Then a trackpad
-      and keys slide up on the iPhone, and “Buy flowers” is typed as a new to-do, appearing on both screens as it’s
-      typed.
+      A laptop and an iPhone held upright, both showing the same Mac. On the iPhone, the Mac’s screen is tall and
+      narrow, and a finger ticks the to-do “Book a table for seven”. Then keys and a trackpad slide up on the iPhone,
+      the Mac switches to its full landscape screen on both, and “Buy flowers” is typed as a new to-do, appearing on
+      both screens as it’s typed.
     </title>
     <defs>
-      <!-- The Mac's screen as the laptop mirrors it: the strip, not the whole panel -->
-      <clipPath id="scene-laptop-screen"><rect x="205.5" y="31" width="125" height="271.25" /></clipPath>
+      <clipPath id="scene-laptop-display"><rect x="51" y="31" width="434" height="271.25" rx="4" /></clipPath>
+      <!-- The tall screen as the laptop mirrors it: a strip, not the whole panel -->
+      <clipPath id="scene-laptop-strip"><rect x="200.525" y="31" width="134.95" height="271.25" /></clipPath>
       <clipPath id="scene-phone-screen"><rect x="407" y="135" width="144" height="312.48" rx="24" /></clipPath>
       <linearGradient id="scene-deck" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="#e6e8ec" />
@@ -95,150 +68,74 @@ const keys = [
     <circle cx="268" cy="25.5" r="1.8" fill="#46474c" />
     <path d="M8 314.5H528V320.5A6 6 0 0 1 522 326.5H14A6 6 0 0 1 8 320.5Z" fill="url(#scene-deck)" />
     <path d="M236 314.5H300V316A3 3 0 0 1 297 319H239A3 3 0 0 1 236 316Z" fill="#a3a6ad" />
+    <g clip-path="url(#scene-laptop-strip)">
+      <g class="mac-tall">
+        <g class="desktop" transform="translate(200.525 31) scale(0.337376)"><MacTall /></g>
+      </g>
+    </g>
+    <g clip-path="url(#scene-laptop-display)">
+      <g class="mac-wide">
+        <g class="desktop" transform="translate(51 31) scale(0.678125)"><MacWide /></g>
+      </g>
+    </g>
 
     <!-- The iPhone -->
     <rect x="404" y="140" width="158" height="326.5" rx="30" fill="#1e1e20" opacity="0.3" filter="url(#scene-soft)" />
     <rect x="400" y="128" width="158" height="326.5" rx="30" fill="#1d1d20" stroke="#8f9198" stroke-width="1.5" />
-    <rect x="407" y="135" width="144" height="312.48" rx="24" fill="#0e0e10" />
+    <g clip-path="url(#scene-phone-screen)">
+      <g transform="translate(407 135) scale(0.36)">
+        <rect width="400" height="868" fill="#000" />
 
-    {
-      screens.map((screen) => (
-        <g clip-path={`url(#${screen.clip})`}>
-          <g class="desktop" transform={`translate(${screen.x} ${screen.y}) scale(${screen.scale})`}>
-            {/* Wallpaper: the icon's circle and loop, large */}
-            <rect width="400" height="868" fill="#3b3c40" />
-            <g transform="translate(-29 421) scale(6)">
-              <circle cx={dot.cx} cy={dot.cy} r={dot.r} fill="#ff8a8a" />
-              <path d={loop} fill="none" stroke="#2c2d31" stroke-width="12.48" stroke-linecap="round" stroke-linejoin="round" />
-            </g>
-
-            {/* Menu bar: a narrow screen keeps only the first menus */}
-            <rect width="400" height="24" fill="#1f2023" opacity="0.72" />
-            <g fill="#fff" opacity="0.92">
-              <text x="14" y="16.5" font-weight="700">Notes</text>
-              {menus.map((m) => <text x={m.x} y="16.5">{m.text}</text>)}
-              <rect x="300" y="8" width="15" height="8" rx="2" />
-              <rect x="322" y="8" width="12" height="8" rx="4" />
-              <text x="388" y="16.5" text-anchor="end">Sat 9:41</text>
-            </g>
-
-            {/* Finder: Projects, behind */}
-            <g filter="url(#scene-window-shadow)">
-              <rect x="28" y="70" width="344" height="170" rx="11" fill="#fff" />
-            </g>
-            <path d="M39 70H118V240H39A11 11 0 0 1 28 229V81A11 11 0 0 1 39 70Z" fill="#f0f1f3" />
-            {lights.map((c, i) => <circle cx={46 + i * 16} cy="87" r="5.5" fill={c} />)}
-            <text class="title" x="245" y="91" text-anchor="middle">Projects</text>
-            {sidebar.map((s, i) => <text class="side" x="40" y={122 + i * 23}>{s}</text>)}
-            {folders.map((f) => (
-              <g>
-                <rect x={f.x} y="105" width="20" height="9" rx="3" fill="#4f80e6" />
-                <rect x={f.x} y="110" width="50" height="36" rx="5" fill="#5d8ef0" />
-                <text class="file" x={f.x + 25} y="164" text-anchor="middle">{f.label}</text>
+        <!-- Part 1: the tall Mac screen below the bar, and a finger on it -->
+        <g class="mac-tall">
+          <g class="desktop" transform="translate(0 64)">
+            <MacTall>
+              <g class="finger">
+                <circle r="26" fill="#8e8e93" fill-opacity="0.5" stroke="#fff" stroke-opacity="0.85" stroke-width="3" />
               </g>
-            ))}
-
-            {/* The to-do list: Saturday */}
-            <g filter="url(#scene-window-shadow)">
-              <rect x="16" y="196" width="368" height="340" rx="12" fill="#fff" />
-            </g>
-            {lights.map((c, i) => <circle cx={34 + i * 18} cy="214" r="6" fill={c} />)}
-            <text class="title" x="200" y="219" text-anchor="middle">Saturday</text>
-            <text x="40" y="272" font-size="32" font-weight="700" fill="#1f1f21">Saturday</text>
-            <g font-size="20">
-              {todos.map((t) =>
-                t.done ? (
-                  <>
-                    <circle cx="52" cy={t.y} r="12.75" fill="#ff8a8a" />
-                    <text x="76" y={t.y + 7} fill="#9b9ca2">{t.text}</text>
-                  </>
-                ) : (
-                  <>
-                    <circle cx="52" cy={t.y} r="12" fill="none" stroke="#8d8e94" stroke-width="1.5" />
-                    {t.ticks && <circle class="tick" cx="52" cy={t.y} r="12.75" fill="#ff8a8a" />}
-                    <text class={t.ticks ? 'todo' : undefined} x="76" y={t.y + 7} fill="#2c2c2e">{t.text}</text>
-                  </>
-                ),
-              )}
-              {/* The to-do typed in laptop mode: a white cover slides off it a letter at a time, the caret at its edge */}
-              <g class="row-new">
-                <circle cx="52" cy="494" r="12" fill="none" stroke="#8d8e94" stroke-width="1.5" />
-                <text x="76" y="501" fill="#2c2c2e" textLength="101.5" lengthAdjust="spacingAndGlyphs">Buy flowers</text>
-                <g class="typed-cover">
-                  <rect x="77" y="478" width="106" height="30" fill="#fff" />
-                  <rect x="76" y="482" width="1.6" height="23" fill="#2c2c2e" />
-                </g>
-              </g>
-            </g>
-
-            {/* Dock */}
-            <rect x="36" y="800" width="328" height="50" rx="15" fill="#fff" fill-opacity="0.16" stroke="#fff" stroke-opacity="0.22" />
-            {dockColors.map((c, i) => <rect x={46 + i * 45} y="807" width="36" height="36" rx="9" fill={c} />)}
-
-            {/* The Mac's pointer */}
-            <g class="pointer">
-              <path
-                transform="scale(1.5)"
-                d="M0 0V22L5.6 16.9L9.3 25.6L12.9 24.1L9.3 15.6H16.6Z"
-                fill="#000"
-                stroke="#fff"
-                stroke-width="1.6"
-                stroke-linejoin="round"
-              />
-            </g>
-
-            {
-              screen.name === 'phone' && (
-                <g>
-                  {/* Remote's controls, over the Mac's screen */}
-                  <g fill="#fff">
-                    <text x="16" y="46" font-size="15" opacity="0.6">Local</text>
-                    <circle cx="286" cy="41" r="11" opacity="0.14" />
-                    <circle cx="318" cy="41" r="11" opacity="0.14" />
-                    <circle cx="350" cy="41" r="11" opacity="0.14" />
-                    <circle cx="382" cy="41" r="11" opacity="0.24" />
-                  </g>
-                  {/* Part 1: a finger on the Mac's picture */}
-                  <g class="finger">
-                    <circle r="26" fill="#8e8e93" fill-opacity="0.5" stroke="#fff" stroke-opacity="0.85" stroke-width="3" />
-                  </g>
-                  <g class="ring">
-                    <circle r="26" fill="none" stroke="#fff" stroke-width="3" />
-                  </g>
-                  {/* Part 2: laptop mode's trackpad and keys, under the picture */}
-                  <g class="pad">
-                    <rect y="521" width="400" height="347" fill="#222326" />
-                    <rect x="12" y="533" width="376" height="132" rx="16" fill="#2e2f33" stroke="#45464b" stroke-width="1.5" />
-                    {keys.map((k) => (
-                      <g>
-                        <rect class={k.style ? 'key typed' : 'key'} style={k.style} x={k.x} y={k.y} width={k.w} height="40" rx="6" />
-                        <text
-                          x={k.x + k.w / 2}
-                          y={k.y + 26}
-                          text-anchor="middle"
-                          fill="#fff"
-                          font-size={k.label.length > 1 ? 13 : 18}
-                        >
-                          {k.label}
-                        </text>
-                      </g>
-                    ))}
-                  </g>
-                  <g class="finger2">
-                    <circle r="26" fill="#8e8e93" fill-opacity="0.5" stroke="#fff" stroke-opacity="0.85" stroke-width="3" />
-                  </g>
-                  <g class="ring2">
-                    <circle r="26" fill="none" stroke="#fff" stroke-width="3" />
-                  </g>
-                </g>
-              )
-            }
+              <g class="ring"><circle r="26" fill="none" stroke="#fff" stroke-width="3" /></g>
+            </MacTall>
           </g>
         </g>
-      ))
-    }
 
-    <!-- The iPhone's camera, over its screen -->
+        <!-- Part 2: laptop mode, the Mac's landscape screen at the top, keys and a trackpad below -->
+        <g class="mac-wide">
+          <g class="desktop" transform="translate(0 64) scale(0.625)"><MacWide /></g>
+        </g>
+        <g class="pad">
+          <rect y="314" width="400" height="554" fill="#1b1b1e" />
+          {
+            keys.map((k) => (
+              <g>
+                <rect class={k.style ? 'key typed' : 'key'} style={k.style} x={k.x} y={k.y} width={k.w} height="40" rx="6" />
+                <text x={k.x + k.w / 2} y={k.y + 26} text-anchor="middle" fill="#fff" font-size={k.label.length > 1 ? 13 : 18}>
+                  {k.label}
+                </text>
+              </g>
+            ))
+          }
+          <rect x="12" y="516" width="376" height="340" rx="18" fill="#2e2f33" stroke="#45464b" stroke-width="1.5" />
+        </g>
+
+        <!-- Remote's bar: its buttons either side of the camera, above the Mac's picture -->
+        <rect width="400" height="64" fill="#000" />
+        <g class="desktop" fill="#fff">
+          <text x="18" y="40" font-size="15" opacity="0.6">Local</text>
+          <circle cx="286" cy="34" r="11" opacity="0.18" />
+          <circle cx="318" cy="34" r="11" opacity="0.18" />
+          <circle cx="350" cy="34" r="11" opacity="0.18" />
+          <circle cx="382" cy="34" r="11" opacity="0.3" />
+        </g>
+
+        <!-- Part 2: a finger on the trackpad -->
+        <g class="finger2">
+          <circle r="26" fill="#8e8e93" fill-opacity="0.5" stroke="#fff" stroke-opacity="0.85" stroke-width="3" />
+        </g>
+        <g class="ring2"><circle r="26" fill="none" stroke="#fff" stroke-width="3" /></g>
+      </g>
+    </g>
+
+    <!-- The iPhone's camera, in Remote's bar -->
     <rect x="461" y="142" width="36" height="10.5" rx="5.25" fill="#000" />
   </svg>
 
@@ -277,40 +174,15 @@ const keys = [
 
   .desktop {
     font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif;
-    font-size: 12px;
-  }
-
-  .title {
-    font-size: 13.5px;
-    font-weight: 600;
-    fill: #3a3a3c;
-  }
-
-  .side {
-    fill: #4a4b50;
-  }
-
-  .file {
-    font-size: 11px;
-    fill: #444;
   }
 
   .key {
     fill: #57585d;
   }
 
-  /* The last frame, which is all there is without motion: laptop mode, the to-do ticked, the new one typed, and the
-     pointer by it. */
-  .pointer {
-    transform: translate(120px, 494px);
-  }
-
-  .todo {
-    fill: #9b9ca2;
-  }
-
-  .typed-cover {
-    transform: translateX(103px);
+  /* The last frame, which is all there is without motion: part 2, laptop mode, the new to-do typed. */
+  .mac-tall {
+    opacity: 0;
   }
 
   .finger,
@@ -327,12 +199,11 @@ const keys = [
 
   .finger2,
   .ring2 {
-    transform: translate(244px, 648px);
+    transform: translate(221px, 719px);
   }
 
   .ring circle,
-  .ring2 circle,
-  .tick {
+  .ring2 circle {
     transform-box: fill-box;
     transform-origin: center;
   }
@@ -342,17 +213,23 @@ const keys = [
   }
 
   /* The 14 s loop, in seconds:
-       0–2.4    the finger lands on the picture and pushes the pointer to "Book a table for seven"
-       2.9      it taps, and at 3.0 the to-do ticks
-       5.0–5.7  the trackpad and keys slide up
-       6.3–7.3  a finger on the trackpad moves the pointer below the list; it taps at 7.7
-       8.1–9.4  "Buy flowers" is typed, a key every 120 ms
-       12.6–13.3 the trackpad and keys slide away; 13.4–13.9 everything fades back to the start */
+       0–2.4     part 1: a finger lands on the Mac's picture and pushes the pointer to "Book a table for seven"
+       2.9–3.0   it taps, and the to-do ticks
+       5.0–5.8   keys and a trackpad slide up; the tall screen fades out and the landscape one in, on both devices
+       6.3–7.3   a finger on the trackpad moves the pointer below the list; it taps at 7.7
+       8.1–9.4   "Buy flowers" is typed, a key every 120 ms
+       12.6–13.7 the keys slide away and the tall screen comes back, reset */
   @media (prefers-reduced-motion: no-preference) {
-    .pointer {
-      animation:
-        pointer-move 14s infinite,
-        pointer-fade 14s infinite;
+    .mac-tall {
+      animation: tall-show 14s infinite;
+    }
+
+    .mac-wide {
+      animation: wide-show 14s infinite;
+    }
+
+    .pad {
+      animation: pad 14s infinite;
     }
 
     .finger {
@@ -380,31 +257,11 @@ const keys = [
       animation: ring2 14s infinite;
     }
 
-    .tick {
-      animation: tick 14s infinite;
-    }
-
-    .todo {
-      animation: todo 14s infinite;
-    }
-
-    .pad {
-      animation: pad 14s infinite;
-    }
-
-    .row-new {
-      animation: row-new 14s infinite;
-    }
-
-    .typed-cover {
-      animation: typed 14s infinite;
-    }
-
     .key.typed {
       animation: key 14s infinite;
     }
 
-    .hero-scene[data-paused] :is(.pointer, .finger, .finger2, circle, .todo, .pad, .row-new, .typed-cover, .key) {
+    .hero-scene[data-paused] :is(.mac-tall, .mac-wide, .pad, .finger, .finger2, circle, .key) {
       animation-play-state: paused;
     }
 
@@ -445,45 +302,57 @@ const keys = [
     }
   }
 
-  @keyframes pointer-move {
+  @keyframes tall-show {
     0%,
-    7.14% {
-      transform: translate(250px, 640px);
-      animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+    35.71% {
+      opacity: 1;
     }
-    17.14%,
-    45% {
-      transform: translate(52px, 406px);
-      animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+    37.86%,
+    94.29% {
+      opacity: 0;
     }
-    52.14%,
-    96.5% {
-      transform: translate(120px, 494px);
-    }
-    97.14%,
+    97.86%,
     100% {
-      transform: translate(250px, 640px);
+      opacity: 1;
     }
   }
 
-  @keyframes pointer-fade {
+  @keyframes wide-show {
     0%,
-    95.71% {
-      opacity: 1;
-    }
-    96.43%,
-    99.29% {
+    38.57% {
       opacity: 0;
     }
-    100% {
+    41.43%,
+    90% {
       opacity: 1;
+    }
+    92.14%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes pad {
+    0%,
+    35.71% {
+      transform: translateY(554px);
+      animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    40.71%,
+    90% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.2);
+    }
+    95%,
+    100% {
+      transform: translateY(554px);
     }
   }
 
   @keyframes finger-move {
     0%,
     7.14% {
-      transform: translate(268px, 668px);
+      transform: translate(268px, 628px);
       animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
     }
     17.14%,
@@ -531,69 +400,15 @@ const keys = [
     }
   }
 
-  @keyframes tick {
-    0%,
-    21.43% {
-      opacity: 0;
-      transform: scale(0.4);
-    }
-    22.5% {
-      opacity: 1;
-      transform: scale(1.18);
-    }
-    23.79%,
-    97.14% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    99.29%,
-    100% {
-      opacity: 0;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes todo {
-    0%,
-    21.43% {
-      fill: #2c2c2e;
-    }
-    22.5%,
-    97.14% {
-      fill: #9b9ca2;
-    }
-    99.29%,
-    100% {
-      fill: #2c2c2e;
-    }
-  }
-
-  @keyframes pad {
-    0%,
-    35.71% {
-      transform: translateY(347px);
-      animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    40.71%,
-    90% {
-      transform: translateY(0);
-      animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.2);
-    }
-    95%,
-    100% {
-      transform: translateY(347px);
-    }
-  }
-
   @keyframes finger2-move {
     0%,
     45% {
-      transform: translate(176px, 560px);
+      transform: translate(140px, 600px);
       animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
     }
     52.14%,
     100% {
-      transform: translate(244px, 648px);
+      transform: translate(221px, 719px);
     }
   }
 
@@ -633,33 +448,6 @@ const keys = [
     100% {
       opacity: 0;
       transform: scale(1.9);
-    }
-  }
-
-  @keyframes row-new {
-    0%,
-    55.71% {
-      opacity: 0;
-    }
-    56.43%,
-    95.71% {
-      opacity: 1;
-    }
-    97.14%,
-    100% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes typed {
-    0%,
-    57.86% {
-      transform: translateX(0);
-      animation-timing-function: steps(11, start);
-    }
-    67.14%,
-    100% {
-      transform: translateX(103px);
     }
   }
 
