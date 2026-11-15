@@ -9,6 +9,3 @@ export const testFlightURL: string | null = null;
  * the app repo's scripts/release/mac-host-dmg.sh output (build/release/).
  */
 export const macAppURL: string | null = '/downloads/Remote-for-Mac-Host-1.0.dmg';
-
-/** The version of the app in that .dmg, shown under the buttons. */
-export const macAppVersion = '1.0';

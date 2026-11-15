@@ -6,7 +6,7 @@ One page with the links to the Remote for Mac beta: the TestFlight invite for th
 
 Each button says "Coming soon" until its link is set in `src/links.ts`. Commit and push; Vercel redeploys the site.
 
-- **Download the Mac app** is live. The notarized `.dmg` is served from `public/downloads/`. For a new version, run `scripts/release/mac-host-dmg.sh` in [remote-for-mac](https://github.com/belmont-engineering/remote-for-mac) (private), copy `build/release/Remote-for-Mac-Host-<version>.dmg` into `public/downloads/`, and update `macAppURL` and `macAppVersion`.
+- **Download the Mac app** is live. The notarized `.dmg` is served from `public/downloads/`. For a new version, run `scripts/release/mac-host-dmg.sh` in [remote-for-mac](https://github.com/belmont-engineering/remote-for-mac) (private), copy `build/release/Remote-for-Mac-Host-<version>.dmg` into `public/downloads/`, and update `macAppURL`.
 - **Join the beta on TestFlight** turns on when `testFlightURL` is set to the public TestFlight link.
 
 ## Working on it
