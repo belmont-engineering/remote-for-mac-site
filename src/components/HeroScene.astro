@@ -1,15 +1,15 @@
 ---
 // The hero: a laptop and an iPhone held upright, both showing the same Mac (drawn like the Figma mockups on page
 // "Website screenshots"). Remote's buttons sit in a black bar across the top of the iPhone, so they never cover the
-// Mac's picture. A 14 s loop in two parts:
-//   1. Full screen: the Mac gets a tall screen the shape of the iPhone below the bar (MacTall), which the laptop
-//      mirrors as a strip with black either side. A finger pushes the pointer to a to-do and taps; it ticks.
-//   2. Laptop mode (phase 5): keys and a trackpad slide up under the picture. The space left is about square, so the
-//      Mac goes back to its own landscape screen (MacWide): the laptop fills its display and the iPhone shows all of
-//      it. A finger on the trackpad moves the pointer below the list and taps, and "Buy flowers" is typed on the keys.
-// Each Mac screen is drawn once per device from the same component, and both copies run the same CSS animations, so
-// they stay in step. Without motion (prefers-reduced-motion), the scene rests on its last frame: part 2, typed.
-import MacTall from './MacTall.astro';
+// Mac's picture. The Mac keeps its own landscape screen throughout (MacWide): the laptop fills its display with it,
+// and the iPhone fits all of it across its width. A 14 s loop in two parts:
+//   1. Full screen: the picture sits in the middle of the iPhone, black above and below. A finger pushes the pointer
+//      to a to-do and taps; it ticks.
+//   2. Laptop mode (phase 5): keys and a trackpad slide up, and the picture moves up to sit under the bar. A finger on
+//      the trackpad moves the pointer below the list and taps, and "Buy flowers" is typed on the keys.
+// The loop ends with both screens dipping to black for a moment while everything resets. The screen is drawn once per
+// device from the same component, and both copies run the same CSS animations, so they stay in step. Without motion
+// (prefers-reduced-motion), the scene rests on its last frame: part 2, typed.
 import MacWide from './MacWide.astro';
 
 // The keys in laptop mode. Each key typed in "Buy flowers" lights when it's pressed: the first at 8.1 s into the
@@ -39,15 +39,12 @@ const keys = [
 <div class="hero-scene">
   <svg viewBox="0 0 576 478" role="img" aria-labelledby="scene-title">
     <title id="scene-title">
-      A laptop and an iPhone held upright, both showing the same Mac. On the iPhone, the Mac’s screen is tall and
-      narrow, and a finger ticks the to-do “Book a table for seven”. Then keys and a trackpad slide up on the iPhone,
-      the Mac switches to its full landscape screen on both, and “Buy flowers” is typed as a new to-do, appearing on
-      both screens as it’s typed.
+      A laptop and an iPhone held upright, both showing the same Mac’s landscape screen. On the iPhone, a finger ticks
+      the to-do “Book a table for seven”. Then keys and a trackpad slide up on the iPhone, the Mac’s picture moves up
+      above them, and “Buy flowers” is typed as a new to-do, appearing on both screens as it’s typed.
     </title>
     <defs>
       <clipPath id="scene-laptop-display"><rect x="51" y="31" width="434" height="271.25" rx="4" /></clipPath>
-      <!-- The tall screen as the laptop mirrors it: a strip, not the whole panel -->
-      <clipPath id="scene-laptop-strip"><rect x="200.525" y="31" width="134.95" height="271.25" /></clipPath>
       <clipPath id="scene-phone-screen"><rect x="407" y="135" width="144" height="312.48" rx="24" /></clipPath>
       <linearGradient id="scene-deck" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="#e6e8ec" />
@@ -68,15 +65,9 @@ const keys = [
     <circle cx="268" cy="25.5" r="1.8" fill="#46474c" />
     <path d="M8 314.5H528V320.5A6 6 0 0 1 522 326.5H14A6 6 0 0 1 8 320.5Z" fill="url(#scene-deck)" />
     <path d="M236 314.5H300V316A3 3 0 0 1 297 319H239A3 3 0 0 1 236 316Z" fill="#a3a6ad" />
-    <g clip-path="url(#scene-laptop-strip)">
-      <g class="mac-tall">
-        <g class="desktop" transform="translate(200.525 31) scale(0.337376)"><MacTall /></g>
-      </g>
-    </g>
     <g clip-path="url(#scene-laptop-display)">
-      <g class="mac-wide">
-        <g class="desktop" transform="translate(51 31) scale(0.678125)"><MacWide /></g>
-      </g>
+      <g class="desktop" transform="translate(51 31) scale(0.678125)"><MacWide /></g>
+      <rect class="blackout" x="51" y="31" width="434" height="271.25" fill="#000" />
     </g>
 
     <!-- The iPhone -->
@@ -86,20 +77,9 @@ const keys = [
       <g transform="translate(407 135) scale(0.36)">
         <rect width="400" height="868" fill="#000" />
 
-        <!-- Part 1: the tall Mac screen below the bar, and a finger on it -->
-        <g class="mac-tall">
-          <g class="desktop" transform="translate(0 64)">
-            <MacTall>
-              <g class="finger">
-                <circle r="26" fill="#8e8e93" fill-opacity="0.5" stroke="#fff" stroke-opacity="0.85" stroke-width="3" />
-              </g>
-              <g class="ring"><circle r="26" fill="none" stroke="#fff" stroke-width="3" /></g>
-            </MacTall>
-          </g>
-        </g>
-
-        <!-- Part 2: laptop mode, the Mac's landscape screen at the top, keys and a trackpad below -->
-        <g class="mac-wide">
+        <!-- The Mac's landscape screen across the iPhone's width: in part 1 in the middle of the space below the bar
+             (277 lower), in part 2 just under the bar, with keys and a trackpad below -->
+        <g class="phone-mac">
           <g class="desktop" transform="translate(0 64) scale(0.625)"><MacWide /></g>
         </g>
         <g class="pad">
@@ -116,6 +96,7 @@ const keys = [
           }
           <rect x="12" y="516" width="376" height="340" rx="18" fill="#2e2f33" stroke="#45464b" stroke-width="1.5" />
         </g>
+        <rect class="blackout" y="64" width="400" height="804" fill="#000" />
 
         <!-- Remote's bar: its buttons either side of the camera, above the Mac's picture -->
         <rect width="400" height="64" fill="#000" />
@@ -126,6 +107,12 @@ const keys = [
           <circle cx="350" cy="34" r="11" opacity="0.18" />
           <circle cx="382" cy="34" r="11" opacity="0.3" />
         </g>
+
+        <!-- Part 1: a finger on the Mac's picture -->
+        <g class="finger">
+          <circle r="26" fill="#8e8e93" fill-opacity="0.5" stroke="#fff" stroke-opacity="0.85" stroke-width="3" />
+        </g>
+        <g class="ring"><circle r="26" fill="none" stroke="#fff" stroke-width="3" /></g>
 
         <!-- Part 2: a finger on the trackpad -->
         <g class="finger2">
@@ -181,10 +168,7 @@ const keys = [
   }
 
   /* The last frame, which is all there is without motion: part 2, laptop mode, the new to-do typed. */
-  .mac-tall {
-    opacity: 0;
-  }
-
+  .blackout,
   .finger,
   .ring,
   .finger2,
@@ -192,9 +176,10 @@ const keys = [
     opacity: 0;
   }
 
+  /* The finger sits just below and right of the pointer's tip, so the tip stays visible. */
   .finger,
   .ring {
-    transform: translate(70px, 434px);
+    transform: translate(183px, 501.5px);
   }
 
   .finger2,
@@ -213,19 +198,21 @@ const keys = [
   }
 
   /* The 14 s loop, in seconds:
-       0–2.4     part 1: a finger lands on the Mac's picture and pushes the pointer to "Book a table for seven"
-       2.9–3.0   it taps, and the to-do ticks
-       5.0–5.8   keys and a trackpad slide up; the tall screen fades out and the landscape one in, on both devices
+       0–0.3     the screens come up from black
+       0.8–2.4   part 1: a finger lands on the Mac's picture and pushes the pointer to "Book a table for seven"
+       2.9–3.15  it taps, and the to-do ticks
+       5.0–5.7   keys and a trackpad slide up on the iPhone, and the picture moves up to sit under the bar
        6.3–7.3   a finger on the trackpad moves the pointer below the list; it taps at 7.7
        8.1–9.4   "Buy flowers" is typed, a key every 120 ms
-       12.6–13.7 the keys slide away and the tall screen comes back, reset */
+       12.6–13.3 the keys slide away and the picture goes back to the middle
+       13.4–14   both screens dip to black, and everything resets at 13.8 */
   @media (prefers-reduced-motion: no-preference) {
-    .mac-tall {
-      animation: tall-show 14s infinite;
+    .phone-mac {
+      animation: phone-mac 14s infinite;
     }
 
-    .mac-wide {
-      animation: wide-show 14s infinite;
+    .blackout {
+      animation: blackout 14s infinite;
     }
 
     .pad {
@@ -261,7 +248,7 @@ const keys = [
       animation: key 14s infinite;
     }
 
-    .hero-scene[data-paused] :is(.mac-tall, .mac-wide, .pad, .finger, .finger2, circle, .key) {
+    .hero-scene[data-paused] :is(.phone-mac, .blackout, .pad, .finger, .finger2, circle, .key) {
       animation-play-state: paused;
     }
 
@@ -302,33 +289,35 @@ const keys = [
     }
   }
 
-  @keyframes tall-show {
+  /* In step with the pad: the picture's middle position is 277 lower, half of the 554 the keys and trackpad take. */
+  @keyframes phone-mac {
     0%,
     35.71% {
+      transform: translateY(277px);
+      animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    40.71%,
+    90% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.2);
+    }
+    95%,
+    100% {
+      transform: translateY(277px);
+    }
+  }
+
+  @keyframes blackout {
+    0% {
       opacity: 1;
     }
-    37.86%,
-    94.29% {
+    2.14%,
+    95.71% {
       opacity: 0;
     }
     97.86%,
     100% {
       opacity: 1;
-    }
-  }
-
-  @keyframes wide-show {
-    0%,
-    38.57% {
-      opacity: 0;
-    }
-    41.43%,
-    90% {
-      opacity: 1;
-    }
-    92.14%,
-    100% {
-      opacity: 0;
     }
   }
 
@@ -352,12 +341,12 @@ const keys = [
   @keyframes finger-move {
     0%,
     7.14% {
-      transform: translate(268px, 628px);
+      transform: translate(305.5px, 556.5px);
       animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
     }
     17.14%,
     100% {
-      transform: translate(70px, 434px);
+      transform: translate(183px, 501.5px);
     }
   }
 
