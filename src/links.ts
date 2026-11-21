@@ -2,7 +2,7 @@
 // When the beta opens, paste the links in, commit and push: Vercel redeploys the site.
 
 /** The TestFlight public link for the viewer app (iPhone, iPad and Mac), e.g. https://testflight.apple.com/join/AbCdEf12 */
-export const testFlightURL: string | null = null;
+export const testFlightURL: string | null = 'https://testflight.apple.com/join/VbQSn9Fn';
 
 /**
  * The notarized .dmg of the Mac app that gets controlled. It's served from public/downloads/, copied there from
